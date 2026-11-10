@@ -2,7 +2,7 @@ import argparse
 import os
 import sys
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 from functools import partial
 from pathlib import Path
 from shutil import get_terminal_size
@@ -29,11 +29,15 @@ from fhir_converter.renderers import (
 from fhir_converter.utils import del_path_quietly, mkdir
 
 
-class RenderSourceFormat(StrEnum):
+class RenderSourceFormat(str, Enum):
     """RenderSourceFormat The source format to render"""
 
     STU3 = "STU3"
     CCDA = "CCDA"
+
+    def __str__(self) -> str:
+        """Return the value, matching ``enum.StrEnum`` (Python 3.11+) on every supported Python"""
+        return str(self.value)
 
 
 render_map: Final[Mapping[RenderSourceFormat, Type[BaseFhirRenderer]]] = frozendict(
